@@ -26,7 +26,6 @@ public class Categoria implements Serializable {
 	}
 
 	public Categoria(String nome) {
-		super();
 		this.nome = nome;
 	}
 
@@ -37,5 +36,6 @@ public class Categoria implements Serializable {
 	public String getNome() {
 		return nome;
 	}
+
 
 }
