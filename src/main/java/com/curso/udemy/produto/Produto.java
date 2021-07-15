@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.curso.udemy.categoria.Categoria;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,12 +22,15 @@ public class Produto implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotBlank
 	private String nome;
 
+	@NotNull
 	private BigDecimal preco;
 
 	@ManyToOne
 	@JsonIgnore
+	@NotNull
 	private Categoria categoria;
 
 	@Deprecated
