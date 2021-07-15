@@ -17,34 +17,27 @@ public class CategoriaController {
 
 	@Autowired
 	private CategoriaRepository categoriaRepo;
-	
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<?> BuscaCategoria(@PathVariable Long id) {
-		
+
 		Optional<Categoria> categoria = categoriaRepo.findById(id);
-		
-		
-		if(categoria.orElse(null) == null) {
+
+		if (categoria.orElse(null) == null) {
 			return ResponseEntity.badRequest().build();
 		}
-		
-		
-		return ResponseEntity.ok().build();
+
+		return ResponseEntity.ok().body(new CategoriaDto(categoria.get()));
 	}
 
-	
-	
 	@PostMapping
 	public ResponseEntity<?> criaCategoria(@RequestBody CategoriaRequest request) {
-		
+
 		Categoria categoria = request.toModel();
-		
+
 		categoriaRepo.save(categoria);
-		
+
 		return ResponseEntity.ok().build();
 	}
 
-
-	
 }

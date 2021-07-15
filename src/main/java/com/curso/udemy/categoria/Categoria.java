@@ -24,7 +24,7 @@ public class Categoria implements Serializable {
 	private Long id;
 
 	private String nome;
-	
+
 	@OneToMany(mappedBy = "categoria")
 	private List<Produto> produtos = new ArrayList<Produto>();
 
@@ -45,5 +45,8 @@ public class Categoria implements Serializable {
 		return nome;
 	}
 
+	public List<Produto> getProdutos() {
+		return produtos;
+	}
 
 }

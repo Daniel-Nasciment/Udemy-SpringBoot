@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import com.curso.udemy.categoria.Categoria;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Produto implements Serializable {
@@ -24,6 +25,7 @@ public class Produto implements Serializable {
 	private BigDecimal preco;
 
 	@ManyToOne
+	@JsonIgnore
 	private Categoria categoria;
 
 	@Deprecated
