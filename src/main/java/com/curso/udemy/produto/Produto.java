@@ -43,19 +43,19 @@ public class Produto implements Serializable {
 		this.preco = preco;
 		this.categoria = categoria;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
-	
+
 	public String getNome() {
 		return nome;
 	}
-	
+
 	public BigDecimal getPreco() {
 		return preco;
 	}
-	
+
 	public Categoria getCategoria() {
 		return categoria;
 	}

@@ -30,9 +30,14 @@ public class Categoria implements Serializable {
 	@OneToMany(mappedBy = "categoria")
 	private List<Produto> produtos = new ArrayList<Produto>();
 
-	
+	@Deprecated
 	public Categoria() {
 
+	}
+
+	public Categoria(Long id, String nome) {
+		this.id = id;
+		this.nome = nome;
 	}
 
 	public Categoria(String nome) {
@@ -49,6 +54,11 @@ public class Categoria implements Serializable {
 
 	public List<Produto> getProdutos() {
 		return produtos;
+	}
+
+	@Override
+	public String toString() {
+		return "Categoria [id=" + id + ", nome=" + nome + ", produtos=" + produtos + "]";
 	}
 
 }

@@ -21,15 +21,17 @@ public class CategoriaController {
 	private CategoriaRepository categoriaRepo;
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> BuscaCategoria(@PathVariable Long id) {
+	public ResponseEntity<CategoriaDto> BuscaCategoria(@PathVariable Long id) {
 
+		System.out.println(categoriaRepo.findById(id));
+		
 		Optional<Categoria> categoria = categoriaRepo.findById(id);
 
 		if (categoria.orElse(null) == null) {
 			return ResponseEntity.badRequest().build();
 		}
 
-		return ResponseEntity.ok().body(new CategoriaDto(categoria.get()));
+		return ResponseEntity.ok(new CategoriaDto(categoria.get()));
 	}
 
 	@PostMapping
