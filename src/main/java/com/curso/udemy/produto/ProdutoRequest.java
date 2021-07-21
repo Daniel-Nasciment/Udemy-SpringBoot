@@ -20,6 +20,17 @@ public class ProdutoRequest {
 	@NotNull
 	private Long categoria;
 
+	@Deprecated
+	public ProdutoRequest() {
+		
+	}
+	
+	public ProdutoRequest(@NotBlank String nome, @NotNull BigDecimal preco, @NotNull Long categoria) {
+		this.nome = nome;
+		this.preco = preco;
+		this.categoria = categoria;
+	}
+
 	public String getNome() {
 		return nome;
 	}
