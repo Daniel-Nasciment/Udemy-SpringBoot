@@ -19,6 +19,9 @@ public class CategoriaController {
 
 	@Autowired
 	private CategoriaRepository categoriaRepo;
+	
+	@Autowired
+	private CategoriaService categoriaService;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<CategoriaDto> BuscaCategoria(@PathVariable Long id) {
@@ -30,6 +33,8 @@ public class CategoriaController {
 		if (categoria.orElse(null) == null) {
 			return ResponseEntity.badRequest().build();
 		}
+		
+		categoriaService.criandoRegraQualquer();
 
 		return ResponseEntity.ok(new CategoriaDto(categoria.get()));
 	}

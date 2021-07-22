@@ -1,5 +1,8 @@
 package com.curso.udemy.categoria;
 
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -37,12 +40,16 @@ public class CategoriaControllerTest {
 	@MockBean
 	private CategoriaRepository categoriaRepo;
 
+	@MockBean
+	private CategoriaService categoriaService;
+
 	@Test
 	public void buscaPorIdDeveRetornarOk() throws Exception {
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/categorias/1")).andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
 
+		verify(categoriaService, times(1)).criandoRegraQualquer();
 	}
 
 	@Test
@@ -53,6 +60,8 @@ public class CategoriaControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.get("/categorias/{id}", maxValue))
 				.andExpect(MockMvcResultMatchers.status().isBadRequest());
 
+		verify(categoriaService, never()).criandoRegraQualquer();
+
 	}
 
 	@Test
@@ -60,9 +69,13 @@ public class CategoriaControllerTest {
 		CategoriaRequest request = new CategoriaRequest();
 		request.setNome("Nova categoira");
 
+
 		mockMvc.perform(
 				post("/categorias").contentType("application/json").content(objectMapper.writeValueAsString(request)))
 				.andExpect(status().isOk());
+
+		verify(categoriaService, never()).criandoRegraQualquer();
+
 	}
 
 	@BeforeEach
