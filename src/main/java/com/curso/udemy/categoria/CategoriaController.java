@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,7 @@ public class CategoriaController {
 
 	@Autowired
 	private CategoriaRepository categoriaRepo;
-	
+
 	@Autowired
 	private CategoriaService categoriaService;
 
@@ -27,13 +28,13 @@ public class CategoriaController {
 	public ResponseEntity<CategoriaDto> BuscaCategoria(@PathVariable Long id) {
 
 		System.out.println(categoriaRepo.findById(id));
-		
+
 		Optional<Categoria> categoria = categoriaRepo.findById(id);
 
 		if (categoria.orElse(null) == null) {
 			return ResponseEntity.badRequest().build();
 		}
-		
+
 		categoriaService.criandoRegraQualquer();
 
 		return ResponseEntity.ok(new CategoriaDto(categoria.get()));
@@ -47,6 +48,19 @@ public class CategoriaController {
 		categoriaRepo.save(categoria);
 
 		return ResponseEntity.ok().build();
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deletarCategoria(@PathVariable Long id) {
+
+		if (categoriaRepo.existsById(id) == false) {
+			return ResponseEntity.badRequest().build();
+		}
+
+		categoriaRepo.deleteById(id);
+
+		return ResponseEntity.ok().build();
+
 	}
 
 }
