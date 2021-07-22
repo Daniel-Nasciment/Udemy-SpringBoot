@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -60,6 +61,23 @@ public class CategoriaController {
 		categoriaRepo.deleteById(id);
 
 		return ResponseEntity.ok().build();
+
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<?> atualizarCategoria(@PathVariable Long id, @RequestBody @Valid CategoriaRequest request){
+		
+		Optional<Categoria> categoria = categoriaRepo.findById(id);
+		
+		if (categoriaRepo.existsById(id) == false) {
+			return ResponseEntity.badRequest().build();
+		}
+		
+		Categoria categoriaAtt = categoriaService.replace(categoria.get(), request);
+		
+		categoriaRepo.save(categoriaAtt);
+		
+		return ResponseEntity.ok(new CategoriaDto(categoriaAtt));
 
 	}
 
