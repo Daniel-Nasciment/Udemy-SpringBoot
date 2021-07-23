@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.curso.udemy.util.IdNotFoundException;
+
 @RestController
 @RequestMapping("/categorias")
 public class CategoriaController {
@@ -32,9 +34,7 @@ public class CategoriaController {
 
 		Optional<Categoria> categoria = categoriaRepo.findById(id);
 
-		if (categoria.orElse(null) == null) {
-			return ResponseEntity.badRequest().build();
-		}
+		if (categoria.orElse(null) == null) throw new IdNotFoundException("Id não localizado");
 
 		categoriaService.criandoRegraQualquer();
 
@@ -54,9 +54,7 @@ public class CategoriaController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deletarCategoria(@PathVariable Long id) {
 
-		if (categoriaRepo.existsById(id) == false) {
-			return ResponseEntity.badRequest().build();
-		}
+		if (categoriaRepo.existsById(id) == false) throw new IdNotFoundException("Id não localizado");
 
 		categoriaRepo.deleteById(id);
 
@@ -65,18 +63,16 @@ public class CategoriaController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> atualizarCategoria(@PathVariable Long id, @RequestBody @Valid CategoriaRequest request){
-		
+	public ResponseEntity<?> atualizarCategoria(@PathVariable Long id, @RequestBody @Valid CategoriaRequest request) {
+
 		Optional<Categoria> categoria = categoriaRepo.findById(id);
-		
-		if (categoriaRepo.existsById(id) == false) {
-			return ResponseEntity.badRequest().build();
-		}
-		
+
+		if (categoriaRepo.existsById(id) == false) throw new IdNotFoundException("Id não localizado");
+
 		Categoria categoriaAtt = categoriaService.replace(categoria.get(), request);
-		
+
 		categoriaRepo.save(categoriaAtt);
-		
+
 		return ResponseEntity.ok(new CategoriaDto(categoriaAtt));
 
 	}
