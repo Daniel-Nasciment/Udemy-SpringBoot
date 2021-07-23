@@ -30,11 +30,9 @@ public class CategoriaController {
 	@GetMapping("/{id}")
 	public ResponseEntity<CategoriaDto> BuscaCategoria(@PathVariable Long id) {
 
-		System.out.println(categoriaRepo.findById(id));
-
 		Optional<Categoria> categoria = categoriaRepo.findById(id);
 
-		if (categoria.orElse(null) == null) throw new IdNotFoundException("Id não localizado");
+		categoria.orElseThrow(() -> new IdNotFoundException("Id não localizado"));
 
 		categoriaService.criandoRegraQualquer();
 
@@ -54,7 +52,8 @@ public class CategoriaController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deletarCategoria(@PathVariable Long id) {
 
-		if (categoriaRepo.existsById(id) == false) throw new IdNotFoundException("Id não localizado");
+		if (categoriaRepo.existsById(id) == false)
+			throw new IdNotFoundException("Id não localizado");
 
 		categoriaRepo.deleteById(id);
 
@@ -67,7 +66,7 @@ public class CategoriaController {
 
 		Optional<Categoria> categoria = categoriaRepo.findById(id);
 
-		if (categoriaRepo.existsById(id) == false) throw new IdNotFoundException("Id não localizado");
+		categoria.orElseThrow(() -> new IdNotFoundException("Id não localizado"));
 
 		Categoria categoriaAtt = categoriaService.replace(categoria.get(), request);
 
