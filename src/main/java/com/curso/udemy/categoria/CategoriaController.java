@@ -72,7 +72,7 @@ public class CategoriaController {
 
 		categoriaRepo.save(categoriaAtt);
 
-		return ResponseEntity.ok(new CategoriaDto(categoriaAtt));
+		return ResponseEntity.ok(new CategoriaDto(categoria.get()));
 
 	}
 

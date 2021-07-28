@@ -4,7 +4,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Optional;
@@ -42,6 +44,8 @@ public class CategoriaControllerTest {
 
 	@MockBean
 	private CategoriaService categoriaService;
+	
+	
 
 	@Test
 	public void buscaPorIdDeveRetornarOk() throws Exception {
@@ -69,7 +73,6 @@ public class CategoriaControllerTest {
 		CategoriaRequest request = new CategoriaRequest();
 		request.setNome("Nova categoira");
 
-
 		mockMvc.perform(
 				post("/categorias").contentType("application/json").content(objectMapper.writeValueAsString(request)))
 				.andExpect(status().isOk());
@@ -78,12 +81,50 @@ public class CategoriaControllerTest {
 
 	}
 
+	@Test
+	public void deveDeletar() throws Exception {
+		mockMvc.perform(delete("/categorias/1")).andExpect(status().isOk());
+
+		verify(categoriaRepo, times(1)).deleteById(1L);
+
+	}
+
+	@Test
+	public void naoDeveDeletar() throws Exception {
+		when(categoriaRepo.existsById(1L)).thenReturn(Boolean.FALSE);
+
+		mockMvc.perform(delete("/categorias/1")).andExpect(status().isBadRequest());
+
+		verify(categoriaRepo, times(0)).deleteById(1L);
+
+	}
+
+	@Test
+	public void deveAtualizar() throws Exception {
+
+		CategoriaRequest request = new CategoriaRequest();
+		request.setNome("Testado");
+		
+		 mockMvc.perform(
+				put("/categorias/1").contentType("application/json").content(objectMapper.writeValueAsString(request)))
+				.andExpect(status().isOk());
+
+	}
+
 	@BeforeEach
 	public void setupRepo() {
 		Categoria categoria = new Categoria(1L, "Teste");
 
+		CategoriaRequest request = new CategoriaRequest();
+		request.setNome("Testado");
+
 		when(categoriaRepo.findById(categoria.getId())).thenReturn(Optional.of(categoria));
 
+		when(categoriaRepo.existsById(categoria.getId())).thenReturn(Boolean.TRUE);
+
+		when(categoriaService.replace(categoria, request)).thenReturn(categoria);
+		
+		when(categoriaRepo.save(categoria)).thenReturn(categoria);
 	}
 
 }
