@@ -110,7 +110,23 @@ public class CategoriaControllerTest {
 				.andExpect(status().isOk());
 
 	}
+	
 
+	@Test
+	public void naoDeveAtualizar() throws Exception {
+
+		long maxValue = Long.MAX_VALUE;
+
+		CategoriaRequest request = new CategoriaRequest();
+		request.setNome("Testado");
+		
+		 mockMvc.perform(
+				put("/categorias/{id}", maxValue).contentType("application/json").content(objectMapper.writeValueAsString(request)))
+				.andExpect(status().isBadRequest());
+
+	}
+	
+	
 	@BeforeEach
 	public void setupRepo() {
 		Categoria categoria = new Categoria(1L, "Teste");

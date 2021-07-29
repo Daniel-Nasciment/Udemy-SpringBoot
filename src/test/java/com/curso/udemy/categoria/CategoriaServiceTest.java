@@ -30,4 +30,13 @@ public class CategoriaServiceTest {
 
 	}
 
+	@Test
+	public void serviceTest() {
+		
+		String var = categoriaService.criandoRegraQualquer();
+		
+		assertEquals(var, "Criando uma regra...");
+		
+	}
+	
 }
