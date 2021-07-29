@@ -114,7 +114,9 @@ public class CategoriaControllerTest {
 	@BeforeEach
 	public void setupRepo() {
 		Categoria categoria = new Categoria(1L, "Teste");
-
+		
+		Categoria categoriaAtt = new Categoria(categoria.getId(), "Testado");
+		
 		CategoriaRequest request = new CategoriaRequest();
 		request.setNome("Testado");
 
@@ -124,7 +126,7 @@ public class CategoriaControllerTest {
 
 		when(categoriaService.replace(categoria, request)).thenReturn(categoria);
 		
-		when(categoriaRepo.save(categoria)).thenReturn(categoria);
+		when(categoriaRepo.save(categoriaAtt)).thenReturn(categoriaAtt);
 	}
 
 }
